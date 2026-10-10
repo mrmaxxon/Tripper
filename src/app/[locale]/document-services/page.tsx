@@ -2,7 +2,6 @@ import { getTranslations } from "next-intl/server";
 import { Navigation } from "@/components/Navigation";
 import { FileCheck, Stamp, Languages, Globe2, ShieldCheck, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "@/i18n/routing";
 
 export const instant = false;
 
@@ -54,19 +53,19 @@ export default async function DocumentServicesPage({
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-[#faf8f5]">
       <Navigation />
 
       <main className="flex-grow pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 text-sm font-semibold mb-4 border border-teal-500/20">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0f6b4f]/10 text-[#0f6b4f] text-sm font-semibold mb-4 border border-[#0f6b4f]/20">
             <FileCheck className="w-4 h-4" />
             {locale === "bn" ? "আইনি ও নথিপত্র সহায়তা" : "Legal & Document Services"}
           </div>
-          <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
+          <h1 className="text-4xl lg:text-5xl font-bold text-[#17201c] mb-4">
             {t("title")}
           </h1>
-          <p className="text-lg text-foreground/75 leading-relaxed">
+          <p className="text-lg text-[#6b7280] leading-relaxed">
             {t("subtitle")}
           </p>
         </div>
@@ -78,74 +77,56 @@ export default async function DocumentServicesPage({
             return (
               <div
                 key={item.id}
-                className="glass-card rounded-2xl p-8 hover:shadow-xl transition-all border border-border/50 relative overflow-hidden flex flex-col justify-between"
+                className="unseen-card rounded-2xl p-8 hover:shadow-xl transition-all border border-[#ebe5dc] relative overflow-hidden flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <div className="p-3.5 rounded-xl bg-primary/10 text-primary">
+                    <div className="p-3.5 rounded-xl bg-[#0f6b4f]/10 text-[#0f6b4f]">
                       <Icon className="w-7 h-7" />
                     </div>
-                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-muted text-foreground/80 border">
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#f5f5f5] text-[#6b7280] border border-[#ebe5dc]">
                       {item.badge}
                     </span>
                   </div>
-                  <h3 className="text-2xl font-bold text-foreground mb-3">
+                  <h3 className="text-2xl font-bold text-[#17201c] mb-3 group-hover:text-[#0f6b4f] transition-colors">
                     {locale === "bn" ? item.titleBn : item.titleEn}
                   </h3>
-                  <p className="text-foreground/75 leading-relaxed mb-6">
+                  <p className="text-[#6b7280] leading-relaxed mb-6">
                     {locale === "bn" ? item.descBn : item.descEn}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-border/30 flex items-center justify-between">
-                  <span className="text-sm text-foreground/60">
-                    {locale === "bn" ? "প্রক্রিয়াকরণ: ২-৪ কার্যদিবস" : "Turnaround: 2-4 business days"}
+                <div className="pt-4 border-t border-[#ebe5dc] flex items-center justify-between">
+                  <span className="text-sm font-semibold text-[#0f6b4f]">
+                    {locale === "bn" ? "আরো জানুন" : "Learn More"}
                   </span>
-                  <Link href="/track-request">
-                    <Button variant="outline" size="sm" className="rounded-full">
-                      {locale === "bn" ? "আবেদন জমা দিন" : "Submit Request"}
-                      <ArrowRight className="w-4 h-4 ml-1" />
-                    </Button>
-                  </Link>
+                  <ArrowRight className="w-4 h-4 text-[#0f6b4f] opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                 </div>
               </div>
             );
           })}
         </div>
 
-        {/* Informative Guarantee Card */}
-        <div className="glass-panel rounded-3xl p-8 md:p-12 text-center max-w-4xl mx-auto border border-primary/20">
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
-            {locale === "bn"
-              ? "জরুরি অনুবাদ ও নোটারি প্রয়োজন?"
-              : "Need Urgent Express Notarization & Attestation?"}
+        {/* Call to action */}
+        <div className="bg-[#f0f9f6] border border-[#0f6b4f]/20 rounded-3xl p-8 lg:p-12 text-center max-w-4xl mx-auto flex flex-col items-center">
+          <h2 className="text-2xl lg:text-3xl font-bold text-[#17201c] mb-4">
+            {locale === "bn" ? "জটিল নথিপত্র? আমাদের উপর ছেড়ে দিন।" : "Complex Paperwork? Leave it to us."}
           </h2>
-          <p className="text-foreground/75 max-w-2xl mx-auto mb-6">
+          <p className="text-[#6b7280] mb-8 max-w-xl">
             {locale === "bn"
-              ? "আমাদের অভিজ্ঞ লিগ্যাল টিম আপনার নথিগুলোর সর্বোচ্চ গোপনীয়তা ও নির্ভুলতা নিশ্চিত করে দ্রুত ডেলিভারি প্রদান করে।"
-              : "Our accredited legal desk coordinates direct appointments, official MOFA submissions, and apostille validation with end-to-end chain of custody."}
+              ? "নিরাপদ, দ্রুত এবং সম্পূর্ণ আইনিভাবে আমরা আপনার সমস্ত নথিপত্র প্রস্তুত করব।"
+              : "Secure, fast, and fully legally compliant. We'll handle your document preparation start to finish."}
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/track-request">
-              <Button size="lg" className="rounded-full px-8">
-                {t("getStarted")}
-              </Button>
-            </Link>
-            <Link href="/visa-services">
-              <Button variant="outline" size="lg" className="rounded-full px-8">
-                {locale === "bn" ? "ভিসা দেশসমূহ দেখুন" : "Explore Visa Requirements"}
-              </Button>
-            </Link>
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <Button size="lg" className="rounded-full px-8 bg-[#0f6b4f] hover:bg-[#0f6b4f]/90 text-white border-0 shadow-md">
+              {locale === "bn" ? "রিকোয়েস্ট সাবমিট করুন" : "Submit Request"}
+            </Button>
+            <Button variant="outline" size="lg" className="rounded-full px-8 border-[#0f6b4f] text-[#0f6b4f] hover:bg-[#0f6b4f] hover:text-white">
+              {locale === "bn" ? "আমাদের কল করুন" : "Call Us Now"}
+            </Button>
           </div>
         </div>
       </main>
-
-      <footer className="bg-foreground text-background py-10 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="font-bold text-xl">Trip<span className="text-primary">per</span></div>
-          <p className="text-background/60 text-sm">© 2026 Tripper. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 }

@@ -56,7 +56,7 @@ export default function TripPlannerPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-[#faf8f5]">
       <Navigation />
 
       <main className="flex-grow pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
@@ -77,7 +77,7 @@ export default function TripPlannerPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Configuration Panel */}
           <div className="lg:col-span-1 space-y-6">
-            <div className="glass-card rounded-2xl p-6 sm:p-8 border border-border/60">
+            <div className="unseen-card rounded-2xl p-6 sm:p-8 border border-border/60">
               <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
                 <MapPin className="w-5 h-5 text-primary" />
                 Trip Parameters
@@ -199,7 +199,7 @@ export default function TripPlannerPage() {
             {itinerary.map((plan, index) => (
               <div
                 key={plan.day}
-                className="glass-card rounded-2xl p-6 border border-border/60 hover:border-primary/40 transition-all flex flex-col sm:flex-row gap-5 items-start"
+                className="unseen-card rounded-2xl p-6 border border-border/60 hover:border-primary/40 transition-all flex flex-col sm:flex-row gap-5 items-start"
               >
                 <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold text-lg flex-shrink-0">
                   D{plan.day}
@@ -244,12 +244,6 @@ export default function TripPlannerPage() {
         </div>
       </main>
 
-      <footer className="bg-foreground text-background py-10 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="font-bold text-xl">Trip<span className="text-primary">per</span></div>
-          <p className="text-background/60 text-sm">© 2026 Tripper. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 }

@@ -9,7 +9,6 @@ export default function TrackRequestPage() {
   const [refId, setRefId] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
 
-  // Demo active record matching customer sample queries
   const mockResult = {
     refId: refId || "TRIP-2026-9041",
     service: "UAE 30-Day Tourist Visa & MOFA Attestation",
@@ -33,7 +32,7 @@ export default function TrackRequestPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-[#faf8f5]">
       <Navigation />
 
       <main className="flex-grow pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
@@ -42,16 +41,16 @@ export default function TrackRequestPage() {
             <Search className="w-4 h-4" />
             <span>Real-time Status Checker</span>
           </div>
-          <h1 className="text-4xl font-bold text-foreground mb-3">
+          <h1 className="text-4xl font-bold text-[#17201c] mb-3">
             Track Application & Quotations
           </h1>
-          <p className="text-foreground/75 text-base max-w-xl mx-auto">
+          <p className="text-[#6b7280] text-base max-w-xl mx-auto">
             Input your Reference Number (e.g. TRIP-2026-9041) or phone number to see live embassy and document stages.
           </p>
         </div>
 
         {/* Search Bar */}
-        <form onSubmit={handleSearch} className="glass-panel p-3 rounded-2xl mb-12 border border-border/60 flex gap-3 shadow-lg">
+        <form onSubmit={handleSearch} className="bg-white p-3 rounded-2xl mb-12 border border-[#ebe5dc] flex gap-3 shadow-sm">
           <div className="relative flex-grow">
             <input
               type="text"
@@ -59,10 +58,10 @@ export default function TrackRequestPage() {
               placeholder="Enter Reference ID (e.g., TRIP-2026-9041)..."
               value={refId}
               onChange={(e) => setRefId(e.target.value)}
-              className="w-full px-5 py-3 rounded-xl bg-background border border-border/50 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 text-sm sm:text-base"
+              className="w-full px-5 py-3 rounded-xl bg-white border border-[#ebe5dc] text-[#17201c] focus:outline-none focus:ring-2 focus:ring-[#0f6b4f]/40 text-sm sm:text-base placeholder:text-[#6b7280]/60"
             />
           </div>
-          <Button type="submit" size="lg" className="rounded-xl px-8 flex-shrink-0">
+          <Button type="submit" size="lg" className="rounded-xl px-8 flex-shrink-0 bg-[#0f6b4f] hover:bg-[#0f6b4f]/90 text-white">
             <Search className="w-4 h-4 mr-1.5" />
             Track
           </Button>
@@ -70,21 +69,21 @@ export default function TrackRequestPage() {
 
         {/* Tracking Details Display */}
         {hasSearched && (
-          <div className="glass-card rounded-3xl p-8 border border-border/60 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
-            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 pb-6 border-b border-border/40">
+          <div className="unseen-card rounded-3xl p-8 border border-[#ebe5dc] space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 pb-6 border-b border-[#ebe5dc]">
               <div>
-                <span className="text-xs uppercase font-bold tracking-wider text-primary block">
+                <span className="text-xs uppercase font-bold tracking-wider text-[#0f6b4f] block">
                   Reference: {mockResult.refId}
                 </span>
-                <h2 className="text-2xl font-bold text-foreground mt-0.5">
+                <h2 className="text-2xl font-bold text-[#17201c] mt-0.5">
                   {mockResult.service}
                 </h2>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Applicant: <span className="font-semibold text-foreground/80">{mockResult.applicant}</span>
+                <p className="text-xs text-[#6b7280] mt-1">
+                  Applicant: <span className="font-semibold text-[#17201c]">{mockResult.applicant}</span>
                 </p>
               </div>
 
-              <div className="px-4 py-2 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold text-sm border border-amber-500/30 flex items-center gap-2 self-start sm:self-auto">
+              <div className="px-4 py-2 rounded-full bg-amber-500/10 text-amber-700 font-bold text-sm border border-amber-500/30 flex items-center gap-2 self-start sm:self-auto">
                 <Clock className="w-4 h-4" />
                 <span>{mockResult.status}</span>
               </div>
@@ -92,63 +91,48 @@ export default function TrackRequestPage() {
 
             {/* Timeline Progress */}
             <div>
-              <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-6">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-[#6b7280] mb-6">
                 Processing Timeline
               </h3>
               <div className="space-y-6">
                 {mockResult.steps.map((step, idx) => (
                   <div key={idx} className="flex items-start gap-4">
-                    <div className="mt-1 flex-shrink-0">
-                      {step.status === "completed" ? (
-                        <CheckCircle2 className="w-6 h-6 text-emerald-500" />
-                      ) : step.status === "current" ? (
-                        <div className="w-6 h-6 rounded-full border-4 border-amber-500 bg-background flex items-center justify-center animate-pulse" />
-                      ) : (
-                        <div className="w-6 h-6 rounded-full border-2 border-border/80 bg-muted/40" />
+                    <div className="flex flex-col items-center">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 border-2 ${
+                        step.status === "completed" ? "bg-[#0f6b4f] border-[#0f6b4f] text-white" :
+                        step.status === "current" ? "bg-amber-100 border-amber-500 text-amber-600" :
+                        "bg-[#f5f5f5] border-[#ebe5dc] text-[#6b7280]"
+                      }`}>
+                        {step.status === "completed" ? <CheckCircle2 className="w-4 h-4" /> : 
+                         step.status === "current" ? <Clock className="w-4 h-4" /> : 
+                         <span className="text-xs font-bold">{idx + 1}</span>}
+                      </div>
+                      {idx !== mockResult.steps.length - 1 && (
+                        <div className={`w-0.5 h-8 mt-2 ${step.status === "completed" ? "bg-[#0f6b4f]/30" : "bg-[#ebe5dc]"}`} />
                       )}
                     </div>
-
-                    <div className="flex-grow">
-                      <div className="flex justify-between items-baseline">
-                        <h4
-                          className={`font-semibold text-base ${
-                            step.status === "completed"
-                              ? "text-foreground"
-                              : step.status === "current"
-                              ? "text-amber-600 dark:text-amber-400 font-bold"
-                              : "text-muted-foreground"
-                          }`}
-                        >
-                          {step.name}
-                        </h4>
-                        <span className="text-xs text-muted-foreground font-medium">
-                          {step.date}
-                        </span>
-                      </div>
+                    <div className="pt-1 pb-4">
+                      <p className={`font-semibold ${step.status === "pending" ? "text-[#6b7280]" : "text-[#17201c]"}`}>
+                        {step.name}
+                      </p>
+                      <p className="text-xs text-[#6b7280] font-medium mt-0.5">{step.date}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="pt-6 border-t border-border/40 flex flex-col sm:flex-row justify-between items-center gap-4">
-              <span className="text-xs text-muted-foreground">
-                Questions about your file? Contact support with your Reference ID.
-              </span>
-              <Button variant="outline" size="sm" className="rounded-full">
-                Download Latest Receipt (PDF)
+            <div className="pt-6 border-t border-[#ebe5dc] flex items-center justify-between">
+              <div className="text-sm text-[#6b7280]">
+                Est. Completion: <span className="font-bold text-[#17201c]">{mockResult.estimatedCompletion}</span>
+              </div>
+              <Button variant="outline" size="sm" className="rounded-full text-xs font-bold border-[#ebe5dc] text-[#17201c] hover:bg-[#f5f5f5]">
+                Download Receipt
               </Button>
             </div>
           </div>
         )}
       </main>
-
-      <footer className="bg-foreground text-background py-10 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="font-bold text-xl">Trip<span className="text-primary">per</span></div>
-          <p className="text-background/60 text-sm">© 2026 Tripper. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 }
