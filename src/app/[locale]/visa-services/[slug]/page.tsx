@@ -28,13 +28,13 @@ export default async function VisaCountryDetail({
   const country = { id: countryDoc.id, ...countryDoc.data() } as any;
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-[#faf8f5]">
       <Navigation />
       
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex-shrink-0">
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/60 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent z-10" />
           {country.hero_image_url && (
             <Image
               src={country.hero_image_url}
@@ -54,7 +54,7 @@ export default async function VisaCountryDetail({
             <p className="text-xl text-white/90 mb-10 leading-relaxed drop-shadow">
               {locale === 'bn' ? country.overview_bn : country.overview_en}
             </p>
-            <Button size="lg" className="rounded-full text-lg h-14 px-8 shadow-lg">
+            <Button size="lg" className="rounded-full text-lg h-14 px-8 shadow-lg bg-[#0f6b4f] hover:bg-[#0f6b4f]/90 text-white border-0">
               {locale === 'bn' ? 'ভিসার জন্য আবেদন করুন' : 'Apply for Visa'}
             </Button>
           </div>
@@ -67,11 +67,11 @@ export default async function VisaCountryDetail({
           
           {/* Main Info */}
           <div className="lg:col-span-2 space-y-8">
-            <div className="glass-panel p-8 rounded-2xl">
-              <h2 className="text-2xl font-bold mb-4 text-foreground">
+            <div className="bg-white border border-[#ebe5dc] shadow-sm p-8 rounded-2xl">
+              <h2 className="text-2xl font-bold mb-4 text-[#17201c]">
                 {locale === 'bn' ? 'ভিসার প্রয়োজনীয়তা' : 'Visa Requirements'}
               </h2>
-              <ul className="space-y-4 text-foreground/80 list-disc list-inside">
+              <ul className="space-y-4 text-[#6b7280] list-disc list-inside">
                 <li>{locale === 'bn' ? 'কমপক্ষে ৬ মাস মেয়াদ থাকা বৈধ পাসপোর্ট' : 'Valid passport with at least 6 months validity'}</li>
                 <li>{locale === 'bn' ? 'সাম্প্রতিক পাসপোর্ট সাইজ ছবি' : 'Recent passport-sized photographs'}</li>
                 <li>{locale === 'bn' ? 'ভ্রমণপথ এবং ফ্লাইট বুকিং' : 'Travel itinerary and flight bookings'}</li>
@@ -82,18 +82,18 @@ export default async function VisaCountryDetail({
           
           {/* Sidebar / Quick Stats */}
           <div className="space-y-6">
-            <div className="glass-card p-6 rounded-2xl">
-              <h3 className="font-bold text-lg mb-4">{locale === 'bn' ? 'প্রসেসিং সময়' : 'Processing Time'}</h3>
-              <p className="text-3xl font-semibold text-primary mb-1">5 - 7</p>
-              <p className="text-foreground/70">{locale === 'bn' ? 'কর্মদিবস' : 'Business Days'}</p>
+            <div className="unseen-card border border-[#ebe5dc] p-6 rounded-2xl">
+              <h3 className="font-bold text-lg mb-4 text-[#17201c]">{locale === 'bn' ? 'প্রসেসিং সময়' : 'Processing Time'}</h3>
+              <p className="text-3xl font-semibold text-[#0f6b4f] mb-1">5 - 7</p>
+              <p className="text-[#6b7280]">{locale === 'bn' ? 'কর্মদিবস' : 'Business Days'}</p>
             </div>
             
-            <div className="glass-card p-6 rounded-2xl bg-secondary/10 border-secondary/20">
-              <h3 className="font-bold text-lg mb-4 text-secondary">{locale === 'bn' ? 'সাহায্য দরকার?' : 'Need Help?'}</h3>
-              <p className="text-foreground/80 mb-6">
+            <div className="bg-[#f0f9f6] border border-[#0f6b4f]/20 p-6 rounded-2xl">
+              <h3 className="font-bold text-lg mb-4 text-[#0f6b4f]">{locale === 'bn' ? 'সাহায্য দরকার?' : 'Need Help?'}</h3>
+              <p className="text-[#17201c]/80 mb-6">
                 {locale === 'bn' ? 'আমাদের ভিসা বিশেষজ্ঞরা আপনার আবেদন প্রস্তুত করতে সহায়তা করার জন্য প্রস্তুত।' : 'Our visa experts are ready to assist you with preparing your application.'}
               </p>
-              <Button variant="outline" className="w-full rounded-full border-secondary text-secondary hover:bg-secondary hover:text-white">
+              <Button variant="outline" className="w-full rounded-full border-[#0f6b4f] text-[#0f6b4f] hover:bg-[#0f6b4f] hover:text-white">
                 {locale === 'bn' ? 'বিশেষজ্ঞের সাথে কথা বলুন' : 'Talk to an Expert'}
               </Button>
             </div>
@@ -101,13 +101,6 @@ export default async function VisaCountryDetail({
 
         </div>
       </main>
-
-      <footer className="bg-foreground text-background py-12 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <div className="font-bold text-2xl">Trip<span className="text-primary">per</span></div>
-          <p className="text-background/60">© 2026 Tripper. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 }

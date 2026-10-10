@@ -3,7 +3,7 @@ $env:Path = "C:\Users\Public\PortableGit\bin;" + [System.Environment]::GetEnviro
 
 Write-Host "Committing updates..."
 git add .
-git commit -m "Phase 2: Add Explore Bangladesh live Firestore integration"
+git commit -m "Phase 3: Add Dynamic Slug Pages for Visas and Packages"
 
 Write-Host "Pushing to Github..."
 git push origin master
