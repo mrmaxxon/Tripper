@@ -1,14 +1,11 @@
 $ErrorActionPreference = "Stop"
 $env:Path = "C:\Users\Public\PortableGit\bin;" + [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
-Write-Host "Initializing Git..."
-git config --global user.name "mrmaxxon"
-git config --global user.email "mrmaxxon@github.com"
-git init
+Write-Host "Committing updates..."
 git add .
-git commit -m "Initial commit for Tripper by Antigravity"
+git commit -m "Phase 2: Add Explore Bangladesh live Firestore integration"
 
-Write-Host "Creating Github Repo..."
-gh repo create Tripper --public --source . --push
+Write-Host "Pushing to Github..."
+git push origin master
 
 Write-Host "Done!"
