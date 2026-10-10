@@ -1,0 +1,65 @@
+{
+  "HomePage": {
+    "title": "From Bangladesh to the World.",
+    "subtitle": "Your complete travel agency, visa assistance, document services & tourism platform.",
+    "exploreDestinations": "Explore Destinations",
+    "getVisaAssistance": "Get Visa Assistance",
+    "services": {
+      "visa": "Visa Assistance",
+      "visaDesc": "Expert guidance for international travel visas.",
+      "documents": "Document Services",
+      "documentsDesc": "Notarization, apostille, and attestation.",
+      "planner": "Trip Planner",
+      "plannerDesc": "Plan your ultimate Bangladesh itinerary.",
+      "packages": "Tour Packages",
+      "packagesDesc": "Domestic and international curated tours."
+    }
+  },
+  "Navigation": {
+    "home": "Home",
+    "exploreBangladesh": "Explore Bangladesh",
+    "visaServices": "Visa Services",
+    "documentServices": "Document Services",
+    "packages": "Packages",
+    "tripPlanner": "Trip Planner",
+    "trackRequest": "Track Request",
+    "admin": "Admin",
+    "login": "Login",
+    "dashboard": "Dashboard"
+  },
+  "VisaServices": {
+    "title": "Visa Assistance Services",
+    "subtitle": "Select a country to explore our expert visa processing and assistance services.",
+    "viewDetails": "View Details"
+  },
+  "DocumentServices": {
+    "title": "Document & Legal Services",
+    "subtitle": "Certified legal translation, notarization, embassy attestation, and apostille support.",
+    "getStarted": "Request Document Service"
+  },
+  "Explore": {
+    "title": "Explore the Beauty of Bangladesh",
+    "subtitle": "Discover 64 districts across all 8 divisions with curated spots and community gems.",
+    "allDivisions": "All Divisions",
+    "viewSpots": "View Places"
+  },
+  "TripPlanner": {
+    "title": "Interactive Trip Planner",
+    "subtitle": "Design your custom travel itinerary, select destinations, and compute estimated budgets.",
+    "calculate": "Estimate Budget"
+  },
+  "Packages": {
+    "title": "Curated Tour Packages",
+    "subtitle": "Handpicked domestic adventures and international holiday experiences.",
+    "bookNow": "Book Package"
+  },
+  "Track": {
+    "title": "Track Your Application",
+    "subtitle": "Enter your Reference ID or Phone number to check real-time status of your visa or document processing.",
+    "search": "Track Status"
+  },
+  "Admin": {
+    "title": "Control Center & Operations",
+    "subtitle": "Manage destination guides, visa applications, document requests, and customer quotations."
+  }
+}
