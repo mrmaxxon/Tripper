@@ -3,7 +3,7 @@
 import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/routing";
 import { Globe, Menu, X, Compass, MapPin, FileCheck, Shield, Search, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 
 import Image from "next/image";
@@ -21,6 +21,16 @@ export function Navigation() {
   };
 
   const isBn = currentLocale === "bn";
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    try {
+      const user = localStorage.getItem("tripper_current_user");
+      if (user) {
+        setIsLoggedIn(true);
+      }
+    } catch (e) {}
+  }, [pathname]);
 
   return (
     <nav className="fixed w-full z-50 unseen-glass-nav transition-all">
@@ -133,11 +143,19 @@ export function Navigation() {
               <span>{isBn ? "English" : "বাংলা"}</span>
             </button>
 
-            <Link href="/login">
-              <button className="px-5 py-2 rounded-full bg-[#17201c] hover:bg-[#0f6b4f] text-white text-xs font-bold transition-all shadow-md">
-                {t("login")}
-              </button>
-            </Link>
+            {isLoggedIn ? (
+              <Link href="/dashboard">
+                <button className="px-5 py-2 rounded-full bg-[#0f6b4f] hover:bg-[#0c563f] text-white text-xs font-bold transition-all shadow-md">
+                  {isBn ? "ড্যাশবোর্ড" : "Dashboard"}
+                </button>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <button className="px-5 py-2 rounded-full bg-[#17201c] hover:bg-[#0f6b4f] text-white text-xs font-bold transition-all shadow-md">
+                  {t("login")}
+                </button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile hamburger */}
@@ -177,11 +195,19 @@ export function Navigation() {
             <Link onClick={() => setIsOpen(false)} href="/document-services" className="py-2 text-[#0f9d8a] border-b border-[#ebe5dc]/60">{t("documentServices")}</Link>
             <Link onClick={() => setIsOpen(false)} href="/packages" className="py-2 text-[#17201c] border-b border-[#ebe5dc]/60">{t("packages")}</Link>
             <Link onClick={() => setIsOpen(false)} href="/track-request" className="py-2 text-[#d97706] border-b border-[#ebe5dc]/60">{t("trackRequest")}</Link>
-            <Link onClick={() => setIsOpen(false)} href="/login" className="pt-2">
-              <button className="w-full py-2.5 rounded-full bg-[#17201c] text-white font-bold text-center">
-                {t("login")}
-              </button>
-            </Link>
+            {isLoggedIn ? (
+              <Link onClick={() => setIsOpen(false)} href="/dashboard" className="pt-2">
+                <button className="w-full py-2.5 rounded-full bg-[#0f6b4f] text-white font-bold text-center">
+                  {isBn ? "ড্যাশবোর্ড" : "Dashboard"}
+                </button>
+              </Link>
+            ) : (
+              <Link onClick={() => setIsOpen(false)} href="/login" className="pt-2">
+                <button className="w-full py-2.5 rounded-full bg-[#17201c] text-white font-bold text-center">
+                  {t("login")}
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       )}

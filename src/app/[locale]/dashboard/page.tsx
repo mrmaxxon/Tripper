@@ -15,12 +15,39 @@ export default function CustomerDashboardPage() {
   const [localRequests, setLocalRequests] = useState<any[]>([]);
 
   useEffect(() => {
+    let resolved = false;
+
+    // Check localStorage user session first
+    try {
+      const storedUser = localStorage.getItem("tripper_current_user");
+      if (storedUser) {
+        const parsed = JSON.parse(storedUser);
+        if (parsed && parsed.email) {
+          setUser(parsed);
+          setLoading(false);
+          resolved = true;
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
         setLoading(false);
+        resolved = true;
       } else {
-        router.push("/login");
+        // Only redirect to login if no active local session exists
+        setTimeout(() => {
+          const storedUser = localStorage.getItem("tripper_current_user");
+          if (!storedUser && !resolved) {
+            router.push("/login");
+          } else if (storedUser) {
+            setUser(JSON.parse(storedUser));
+            setLoading(false);
+          }
+        }, 150);
       }
     });
 
@@ -40,7 +67,12 @@ export default function CustomerDashboardPage() {
   }, [router]);
 
   const handleLogout = async () => {
-    await signOut(auth);
+    try {
+      await signOut(auth);
+    } catch (e) {
+      console.error(e);
+    }
+    localStorage.removeItem("tripper_current_user");
     router.push("/login");
   };
 
