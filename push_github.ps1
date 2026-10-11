@@ -1,11 +1,13 @@
 $ErrorActionPreference = "Stop"
-$env:Path = "C:\Users\Public\PortableGit\bin;" + [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+$env:Path = "C:\Users\Public\PortableGit\bin;" + $env:Path
 
-Write-Host "Committing updates..."
-git add .
-git commit -m "Phase 4: UI/UX Redesign of Inner Pages"
+Write-Host "Adding files..."
+git add -A
 
-Write-Host "Pushing to Github..."
+Write-Host "Committing..."
+git commit -m "Fix: Resolve Visa Services white screen with resilient fallbacks and error boundary"
+
+Write-Host "Pushing to GitHub..."
 git push origin master
 
-Write-Host "Done!"
+Write-Host "Successfully pushed!"
