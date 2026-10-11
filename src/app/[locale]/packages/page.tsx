@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 export default function PackagesPage() {
   const [filter, setFilter] = useState<"All" | "Domestic" | "International">("All");
@@ -81,25 +81,27 @@ export default function PackagesPage() {
                 key={pkg.id}
                 className="unseen-card rounded-3xl overflow-hidden border border-[#ebe5dc] hover:shadow-xl transition-all duration-300 flex flex-col group"
               >
-                <div className="relative h-64 w-full overflow-hidden bg-gray-100">
-                  <Image
-                    src={pkg.hero_image_url}
-                    alt={pkg.name_en}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                  <span className="absolute top-4 left-4 text-xs font-bold px-3 py-1 rounded-full bg-[#0f6b4f] text-white shadow-md">
-                    Package
-                  </span>
-                  <span className="absolute top-4 right-4 text-xs font-semibold px-3 py-1 rounded-full bg-black/50 backdrop-blur-md text-white border border-white/20">
-                    {pkg.duration_en}
-                  </span>
-                  <div className="absolute bottom-4 left-6 right-6 text-white">
-                    <h3 className="text-2xl font-bold leading-snug">{pkg.name_en}</h3>
-                    <p className="text-white/80 text-sm mt-1">{pkg.name_bn}</p>
+                <Link href={`/packages/${pkg.slug}`} className="block">
+                  <div className="relative h-64 w-full overflow-hidden bg-gray-100 cursor-pointer">
+                    <Image
+                      src={pkg.hero_image_url}
+                      alt={pkg.name_en}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                    <span className="absolute top-4 left-4 text-xs font-bold px-3 py-1 rounded-full bg-[#0f6b4f] text-white shadow-md">
+                      Package
+                    </span>
+                    <span className="absolute top-4 right-4 text-xs font-semibold px-3 py-1 rounded-full bg-black/50 backdrop-blur-md text-white border border-white/20">
+                      {pkg.duration_en}
+                    </span>
+                    <div className="absolute bottom-4 left-6 right-6 text-white">
+                      <h3 className="text-2xl font-bold leading-snug group-hover:text-emerald-300 transition-colors">{pkg.name_en}</h3>
+                      <p className="text-white/80 text-sm mt-1">{pkg.name_bn}</p>
+                    </div>
                   </div>
-                </div>
+                </Link>
 
                 <div className="p-7 flex flex-col flex-grow justify-between space-y-6">
                   <div>
@@ -127,7 +129,7 @@ export default function PackagesPage() {
                       </div>
                     </div>
 
-                    <Link href={`/en/packages/${pkg.slug}`}>
+                    <Link href={`/packages/${pkg.slug}`}>
                       <Button className="rounded-full px-6 shadow-md bg-[#0f6b4f] hover:bg-[#0f6b4f]/90 text-white" size="lg">
                         View Details
                         <ArrowRight className="w-4 h-4 ml-1.5" />

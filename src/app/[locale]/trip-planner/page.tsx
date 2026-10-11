@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
-import { MapPin, Calculator, Plus, Trash2, Calendar, DollarSign, ArrowRight, CheckCircle2 } from "lucide-react";
+import { MapPin, Calculator, Plus, Trash2, Calendar, DollarSign, ArrowRight, CheckCircle2, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ActionModal } from "@/components/ActionModal";
+import { useLocale } from "next-intl";
 
 interface DayPlan {
   day: number;
@@ -12,10 +14,26 @@ interface DayPlan {
 }
 
 export default function TripPlannerPage() {
+  const locale = useLocale();
   const [destination, setDestination] = useState("Cox's Bazar");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [days, setDays] = useState(3);
   const [travelers, setTravelers] = useState(2);
   const [tier, setTier] = useState<"budget" | "standard" | "luxury">("standard");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const paramDest = new URLSearchParams(window.location.search).get("destination");
+      if (paramDest) {
+        setDestination(paramDest);
+        setItinerary([
+          { day: 1, location: `${paramDest} Arrival & Check-in`, activity: "Local landmark exploration and regional dining" },
+          { day: 2, location: `${paramDest} Major Sightseeing`, activity: "Guided nature walk and photography tour" },
+          { day: 3, location: `${paramDest} Culture & Departure`, activity: "Local markets, souvenir shopping and return transit" }
+        ]);
+      }
+    }
+  }, []);
 
   const [itinerary, setItinerary] = useState<DayPlan[]>([
     { day: 1, location: "Inani Beach & Marine Drive", activity: "Sunset view and local seafood dining" },
@@ -93,6 +111,9 @@ export default function TripPlannerPage() {
                     onChange={(e) => setDestination(e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl bg-background border border-border focus:ring-2 focus:ring-primary/40 text-sm"
                   >
+                    {!["Cox's Bazar", "Sajek Valley", "Srimangal", "Sundarbans", "Bandarban", "Saint Martin"].includes(destination) && (
+                      <option value={destination}>{destination}</option>
+                    )}
                     <option value="Cox's Bazar">Cox's Bazar (Chittagong)</option>
                     <option value="Sajek Valley">Sajek Valley (Rangamati)</option>
                     <option value="Srimangal">Srimangal (Sylhet)</option>
@@ -141,7 +162,7 @@ export default function TripPlannerPage() {
                         key={item}
                         type="button"
                         onClick={() => setTier(item)}
-                        className={`py-2 rounded-xl text-xs font-semibold capitalize border transition-all ${
+                        className={`py-2 rounded-xl text-xs font-semibold capitalize border transition-all cursor-pointer ${
                           tier === item
                             ? "bg-primary text-white border-primary shadow-md"
                             : "bg-muted/50 text-foreground/75 border-border hover:bg-muted"
@@ -179,7 +200,11 @@ export default function TripPlannerPage() {
                   <span className="text-xs text-muted-foreground font-medium">BDT</span>
                 </div>
 
-                <Button className="w-full mt-6 rounded-full shadow-lg" size="lg">
+                <Button
+                  onClick={() => setIsModalOpen(true)}
+                  className="w-full mt-6 rounded-full shadow-lg bg-[#0f6b4f] hover:bg-[#0f6b4f]/90 text-white font-bold h-12 cursor-pointer active:scale-95 transition-all"
+                  size="lg"
+                >
                   Request Official Quotation
                   <ArrowRight className="w-4 h-4 ml-1.5" />
                 </Button>
@@ -189,11 +214,32 @@ export default function TripPlannerPage() {
 
           {/* Interactive Day-by-Day Schedule */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex justify-between items-center mb-2">
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-2">
               <h2 className="text-2xl font-bold text-foreground">
                 Day-by-Day Route ({days} Days in {destination})
               </h2>
-              <span className="text-xs text-muted-foreground">Editable Schedule</span>
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleDaysChange(days - 1)}
+                  disabled={days <= 1}
+                  className="rounded-full text-xs font-bold border-border cursor-pointer"
+                >
+                  - Remove Day
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleDaysChange(days + 1)}
+                  disabled={days >= 14}
+                  className="rounded-full text-xs font-bold border-border bg-[#0f6b4f]/10 text-[#0f6b4f] hover:bg-[#0f6b4f] hover:text-white cursor-pointer"
+                >
+                  + Add Day
+                </Button>
+              </div>
             </div>
 
             {itinerary.map((plan, index) => (
@@ -244,6 +290,19 @@ export default function TripPlannerPage() {
         </div>
       </main>
 
+      <ActionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={`${destination} (${days} Days Trip)`}
+        subtitle={`Estimated Budget: ৳ ${totalEstimatedCost.toLocaleString()} BDT (${travelers} Travelers, ${tier} tier)`}
+        serviceType="quotation"
+        initialData={{
+          name: `${destination} Trip (${days} Days)`,
+          price: totalEstimatedCost.toLocaleString(),
+          destination,
+        }}
+        locale={locale}
+      />
     </div>
   );
 }

@@ -1,11 +1,14 @@
+"use client";
+
+import { useState, Suspense } from "react";
 import { Navigation } from "@/components/Navigation";
-import { adminDb } from "@/lib/firebase/server";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ShieldCheck, Clock, CheckCircle2, FileText, ArrowLeft, PhoneCall } from "lucide-react";
 import { Link } from "@/i18n/routing";
-
-export const instant = false;
+import { useLocale } from "next-intl";
+import { useParams } from "next/navigation";
+import { ActionModal } from "@/components/ActionModal";
 
 const FALLBACK_COUNTRIES: Record<string, any> = {
   thailand: {
@@ -16,6 +19,7 @@ const FALLBACK_COUNTRIES: Record<string, any> = {
     overview_en: "Explore world-class beaches, Bangkok street food, and ancient Buddhist temples with seamless e-visa and sticker visa support.",
     overview_bn: "থাইল্যান্ডের সমুদ্র সৈকত, স্ট্রিট ফুড ও ঐতিহ্যবাহী বৌদ্ধ মন্দির উপভোগ করুন আমাদের সহজ ভিসা সহায়তায়।",
     processing_time: "3-5 Business Days",
+    fee_bdt: "6,500",
     requirements_en: [
       "Original passport with minimum 6 months validity",
       "2 copies recent passport size photograph (white background, 35x45mm)",
@@ -41,6 +45,7 @@ const FALLBACK_COUNTRIES: Record<string, any> = {
     overview_en: "Futuristic skyline, Gardens by the Bay, and premier luxury shopping with guaranteed paperless e-visa assistance.",
     overview_bn: "আধুনিক নগরী সিঙ্গাপুরের দর্শনীয় স্থানসমূহ ভ্রমণ করুন সম্পূর্ণ পেপারলেস ই-ভিসা সহায়তায়।",
     processing_time: "3-4 Business Days",
+    fee_bdt: "5,800",
     requirements_en: [
       "Original passport with minimum 6 months validity",
       "Recent passport-size photo (matte paper, white background)",
@@ -64,6 +69,7 @@ const FALLBACK_COUNTRIES: Record<string, any> = {
     overview_en: "Kuala Lumpur twin towers, Genting Highlands, and Langkawi island vacation visas processed in record time.",
     overview_bn: "কুয়ালালামপুর, গেন্টিং হাইল্যান্ডস ও ল্যাংকাউই ভ্রমণের জন্য দ্রুততম মালয়েশিয়া ই-ভিসা প্রসেসিং।",
     processing_time: "2-4 Business Days",
+    fee_bdt: "4,500",
     requirements_en: [
       "Passport valid for at least 6 months",
       "35x50mm studio photo on white background",
@@ -85,6 +91,7 @@ const FALLBACK_COUNTRIES: Record<string, any> = {
     overview_en: "Official 1-year multiple entry tourist & Umrah electronic visa processing with round-the-clock guidance.",
     overview_bn: "পবিত্র ওমরাহ ও পর্যটন ভ্রমণের জন্য ১ বছরের মাল্টিপল এন্ট্রি ই-ভিসা দ্রুততম সময়ে সম্পন্ন করুন।",
     processing_time: "24-48 Hours",
+    fee_bdt: "14,500",
     requirements_en: [
       "Valid Bangladeshi passport (minimum 6 months)",
       "Clear passport information page scan",
@@ -106,6 +113,7 @@ const FALLBACK_COUNTRIES: Record<string, any> = {
     overview_en: "Access 27 European nations with a single visa. Complete appointment booking, dossier review, and travel itinerary.",
     overview_bn: "একটি ভিসায় ২৭টি ইউরোপীয় দেশ ভ্রমণ করুন। অ্যাপয়েন্টমেন্ট বুকিং ও ডকুমেন্ট প্রস্তুতির পূর্ণাঙ্গ সহায়তা।",
     processing_time: "15-20 Business Days",
+    fee_bdt: "18,000",
     requirements_en: [
       "Valid passport with at least 2 blank pages",
       "Schengen visa application form duly signed",
@@ -131,6 +139,7 @@ const FALLBACK_COUNTRIES: Record<string, any> = {
     overview_en: "Instant 30-day and 60-day Dubai tourist visas for single and multiple entries with MOFA coordination.",
     overview_bn: "দুবাই ৩০ ও ৬০ দিনের সিঙ্গেল এবং মাল্টিপল এন্ট্রি ট্যুরিস্ট ভিসা অতি দ্রুততম সময়ে অনুমোদন।",
     processing_time: "24-72 Hours",
+    fee_bdt: "11,000",
     requirements_en: [
       "Color scan of passport first and last pages",
       "Passport size color photo with white background",
@@ -150,6 +159,7 @@ const FALLBACK_COUNTRIES: Record<string, any> = {
     overview_en: "Full professional advisory for UK Standard Visitor visas, VFS Global appointments, and financial evidence review.",
     overview_bn: "যুক্তরাজ্য স্ট্যান্ডার্ড ভিজিটর ভিসার আবেদন, ভিএফএস গ্লোবাল অ্যাপয়েন্টমেন্ট ও ফাইল প্রস্তুতির বিশ্বস্ত সেবা।",
     processing_time: "3-4 Weeks",
+    fee_bdt: "22,000",
     requirements_en: [
       "Valid passport and previous expired passports",
       "Evidence of employment/business and financial circumstances",
@@ -171,6 +181,7 @@ const FALLBACK_COUNTRIES: Record<string, any> = {
     overview_en: "DS-160 expert filling, appointment slot scheduling, interview mock preparation, and documentation audit.",
     overview_bn: "ইউএসএ ডিএস-১৬০ নির্ভুল পূরণ, অ্যাপয়েন্টমেন্ট শিডিউলিং ও ইন্টারভিউ মোক প্রস্তুতির বিশেষায়িত গাইড।",
     processing_time: "Slot Based",
+    fee_bdt: "25,000",
     requirements_en: [
       "Valid passport valid for travel to the United States",
       "Confirmation page of application Form DS-160",
@@ -188,54 +199,35 @@ const FALLBACK_COUNTRIES: Record<string, any> = {
   }
 };
 
-export default async function VisaCountryDetail({ 
-  params 
-}: { 
-  params: Promise<{ locale: string; slug: string }> 
-}) {
-  const { locale, slug } = await params;
+function VisaCountryDetailContent() {
+  const locale = useLocale();
+  const params = useParams();
+  const slug = (params?.slug as string) || "thailand";
   const isBn = locale === "bn";
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Attempt to fetch from Firestore, otherwise use fallback data
-  let country = FALLBACK_COUNTRIES[slug];
-
-  try {
-    const docSnap = await adminDb.collection('visa_countries').doc(slug).get();
-    if (docSnap && docSnap.exists) {
-      country = {
-        ...country,
-        id: docSnap.id,
-        ...docSnap.data()
-      };
-    }
-  } catch (err) {
-    console.warn(`[Visa Country Detail] Error fetching slug '${slug}' from Firestore, using fallback:`, err);
-  }
-
-  // If slug is unknown, use default Thailand data with slug title
-  if (!country) {
-    country = {
-      name_en: slug.replace(/-/g, ' ').toUpperCase(),
-      name_bn: slug.replace(/-/g, ' '),
-      slug,
-      hero_image_url: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=1200&auto=format&fit=crop",
-      overview_en: "Professional visa processing and document submission assistance for your international destination.",
-      overview_bn: "আপনার আন্তর্জাতিক গন্তব্যের জন্য পেশাদার ভিসা প্রসেসিং ও ডকুমেন্ট প্রস্তুতি সহায়তা।",
-      processing_time: "5-7 Business Days",
-      requirements_en: [
-        "Valid original passport (min 6 months)",
-        "Recent passport-sized photographs",
-        "Bank statements for previous 6 months",
-        "NOC / Business Trade License"
-      ],
-      requirements_bn: [
-        "কমপক্ষে ৬ মাস মেয়াদী মূল পাসপোর্ট",
-        "সাম্প্রতিক পাসপোর্ট সাইজ রঙিন ছবি",
-        "বিগত ৬ মাসের ব্যাংক স্টেটমেন্ট",
-        "এনওসি অথবা ব্যবসায়িক ট্রেড লাইসেন্স"
-      ]
-    };
-  }
+  const country = FALLBACK_COUNTRIES[slug] || {
+    name_en: slug.replace(/-/g, " ").toUpperCase(),
+    name_bn: slug.replace(/-/g, " "),
+    slug,
+    hero_image_url: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=1200&auto=format&fit=crop",
+    overview_en: "Professional visa processing and document submission assistance for your international destination.",
+    overview_bn: "আপনার আন্তর্জাতিক গন্তব্যের জন্য পেশাদার ভিসা প্রসেসিং ও ডকুমেন্ট প্রস্তুতি সহায়তা।",
+    processing_time: "5-7 Business Days",
+    fee_bdt: "8,500",
+    requirements_en: [
+      "Valid original passport (min 6 months)",
+      "Recent passport-sized photographs",
+      "Bank statements for previous 6 months",
+      "NOC / Business Trade License"
+    ],
+    requirements_bn: [
+      "কমপক্ষে ৬ মাস মেয়াদী মূল পাসপোর্ট",
+      "সাম্প্রতিক পাসপোর্ট সাইজ রঙিন ছবি",
+      "বিগত ৬ মাসের ব্যাংক স্টেটমেন্ট",
+      "এনওসি অথবা ব্যবসায়িক ট্রেড লাইসেন্স"
+    ]
+  };
 
   const reqList = isBn
     ? (country.requirements_bn || country.requirements_en || [])
@@ -277,13 +269,19 @@ export default async function VisaCountryDetail({
               {isBn ? country.overview_bn : country.overview_en}
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="rounded-full text-base h-12 px-8 shadow-lg bg-[#0f6b4f] hover:bg-[#0f6b4f]/90 text-white border-0">
+              <Button
+                onClick={() => setIsModalOpen(true)}
+                size="lg"
+                className="rounded-full text-base h-12 px-8 shadow-lg bg-[#0f6b4f] hover:bg-[#0f6b4f]/90 text-white border-0 font-bold cursor-pointer active:scale-95 transition-all"
+              >
                 {isBn ? "ভিসা আবেদনের সহায়তা নিন" : "Start Visa Application"}
               </Button>
-              <Button size="lg" variant="outline" className="rounded-full text-base h-12 px-6 border-white/30 text-white bg-white/10 backdrop-blur-md hover:bg-white/20">
-                <PhoneCall className="w-4 h-4 mr-2" />
-                {isBn ? "বিশেষজ্ঞের পরামর্শ" : "Talk to Consultant"}
-              </Button>
+              <a href="tel:+8801700000000">
+                <Button size="lg" variant="outline" className="rounded-full text-base h-12 px-6 border-white/30 text-white bg-white/10 backdrop-blur-md hover:bg-white/20 cursor-pointer">
+                  <PhoneCall className="w-4 h-4 mr-2" />
+                  {isBn ? "বিশেষজ্ঞের পরামর্শ" : "Talk to Consultant"}
+                </Button>
+              </a>
             </div>
           </div>
         </div>
@@ -363,7 +361,7 @@ export default async function VisaCountryDetail({
                 </h3>
               </div>
               <p className="text-2xl font-extrabold text-[#17201c] mb-2">
-                {country.fee_bdt || "৳ 6,500 - 15,000"}
+                ৳ {country.fee_bdt}
               </p>
               <p className="text-xs text-[#6b7280] leading-relaxed">
                 {isBn
@@ -381,14 +379,38 @@ export default async function VisaCountryDetail({
                   ? "আমাদের ভিসা বিশেষজ্ঞরা আপনার আবেদন পর্যালোচনা করতে প্রস্তুত।"
                   : "Our dedicated visa officers are available to review your files instantly."}
               </p>
-              <Button variant="outline" className="w-full rounded-full border-[#0f6b4f] text-[#0f6b4f] hover:bg-[#0f6b4f] hover:text-white font-semibold">
-                {isBn ? "সরাসরি কল করুন" : "Call +880 1700-000000"}
-              </Button>
+              <a href="tel:+8801700000000" className="block w-full">
+                <Button variant="outline" className="w-full rounded-full border-[#0f6b4f] text-[#0f6b4f] hover:bg-[#0f6b4f] hover:text-white font-semibold cursor-pointer">
+                  {isBn ? "সরাসরি কল করুন" : "Call +880 1700-000000"}
+                </Button>
+              </a>
             </div>
           </div>
 
         </div>
       </main>
+
+      {/* Action Modal */}
+      <ActionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={isBn ? `${country.name_bn} ভিসা আবেদন` : `${country.name_en} Visa Application`}
+        subtitle={isBn ? "নথিপত্র অডিট ও এম্বাসি সাবমিশন সেবা" : "Document verification & submission service"}
+        serviceType="visa"
+        initialData={{
+          name: country.name_en,
+          price: country.fee_bdt,
+        }}
+        locale={locale}
+      />
     </div>
+  );
+}
+
+export default function VisaCountryDetailPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#faf8f5]" />}>
+      <VisaCountryDetailContent />
+    </Suspense>
   );
 }

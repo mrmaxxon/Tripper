@@ -1,11 +1,14 @@
+"use client";
+
+import { useState, Suspense } from "react";
 import { Navigation } from "@/components/Navigation";
-import { adminDb } from "@/lib/firebase/server";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Check, Clock, Calendar, MapPin, ArrowLeft, PhoneCall } from "lucide-react";
+import { Check, ArrowLeft, PhoneCall } from "lucide-react";
 import { Link } from "@/i18n/routing";
-
-export const instant = false;
+import { useLocale } from "next-intl";
+import { useParams } from "next/navigation";
+import { ActionModal } from "@/components/ActionModal";
 
 const FALLBACK_PACKAGES: Record<string, any> = {
   "saint-martin-retreat": {
@@ -64,43 +67,25 @@ const FALLBACK_PACKAGES: Record<string, any> = {
   }
 };
 
-export default async function PackageDetail({ 
-  params 
-}: { 
-  params: Promise<{ locale: string; slug: string }> 
-}) {
-  const { locale, slug } = await params;
+function PackageDetailContent() {
+  const locale = useLocale();
+  const params = useParams();
+  const slug = (params?.slug as string) || "saint-martin-retreat";
   const isBn = locale === "bn";
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  let pkg = FALLBACK_PACKAGES[slug];
-
-  try {
-    const pkgDoc = await adminDb.collection('packages').doc(slug).get();
-    if (pkgDoc && pkgDoc.exists) {
-      pkg = {
-        ...pkg,
-        id: pkgDoc.id,
-        ...pkgDoc.data()
-      };
-    }
-  } catch (err) {
-    console.warn(`[Package Detail] Error fetching slug '${slug}' from Firestore, using fallback:`, err);
-  }
-
-  if (!pkg) {
-    pkg = {
-      name_en: slug.replace(/-/g, ' ').toUpperCase(),
-      name_bn: slug.replace(/-/g, ' '),
-      slug,
-      duration_en: "3 Days, 2 Nights",
-      duration_bn: "৩ দিন, ২ রাত",
-      price_bdt: 8500,
-      hero_image_url: "https://images.unsplash.com/photo-1598162238318-7dc5e140cfa9?w=1200&auto=format&fit=crop",
-      overview_en: "Curated premium travel package with verified transport, hotel stay, and licensed tour guide coordination.",
-      overview_bn: "নিরাপদ যাতায়াত, মানসম্মত হোটেল ও অভিজ্ঞ গাইড সম্বলিত ট্রাভেল প্যাকেজ।",
-      highlights: ["Compliant verified transport", "Hotel reservation included", "Expert guide assistance"]
-    };
-  }
+  const pkg = FALLBACK_PACKAGES[slug] || {
+    name_en: slug.replace(/-/g, " ").toUpperCase(),
+    name_bn: slug.replace(/-/g, " "),
+    slug,
+    duration_en: "3 Days, 2 Nights",
+    duration_bn: "৩ দিন, ২ রাত",
+    price_bdt: 8500,
+    hero_image_url: "https://images.unsplash.com/photo-1598162238318-7dc5e140cfa9?w=1200&auto=format&fit=crop",
+    overview_en: "Curated premium travel package with verified transport, hotel stay, and licensed tour guide coordination.",
+    overview_bn: "নিরাপদ যাতায়াত, মানসম্মত হোটেল ও অভিজ্ঞ গাইড সম্বলিত ট্রাভেল প্যাকেজ।",
+    highlights: ["Compliant verified transport", "Hotel reservation included", "Expert guide assistance"]
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#faf8f5]">
@@ -188,7 +173,11 @@ export default async function PackageDetail({
               <p className="text-xs text-[#6b7280] mb-6">
                 {isBn ? "জনপ্রতি (অল ইনক্লুসিভ)" : "per person (All Inclusive)"}
               </p>
-              <Button size="lg" className="w-full rounded-full bg-[#0f6b4f] hover:bg-[#0f6b4f]/90 text-white border-0 shadow-md">
+              <Button
+                onClick={() => setIsModalOpen(true)}
+                size="lg"
+                className="w-full rounded-full bg-[#0f6b4f] hover:bg-[#0f6b4f]/90 text-white border-0 shadow-md font-bold text-base h-12 cursor-pointer active:scale-95 transition-all"
+              >
                 {isBn ? "এখনই বুক করুন" : "Book This Tour"}
               </Button>
             </div>
@@ -202,15 +191,39 @@ export default async function PackageDetail({
                   ? "আপনার পরিবার বা বন্ধুদের গ্রুপের জন্য আলাদা পরিকল্পনা দরকার? আমাদের সাথে কথা বলুন।"
                   : "Need a custom private trip for family or corporate groups? We tailor every detail."}
               </p>
-              <Button variant="outline" className="w-full rounded-full border-[#0f6b4f] text-[#0f6b4f] hover:bg-[#0f6b4f] hover:text-white font-semibold">
-                <PhoneCall className="w-4 h-4 mr-2" />
-                {isBn ? "যোগাযোগ করুন" : "Contact Trip Planner"}
-              </Button>
+              <a href="tel:+8801700000000" className="block w-full">
+                <Button variant="outline" className="w-full rounded-full border-[#0f6b4f] text-[#0f6b4f] hover:bg-[#0f6b4f] hover:text-white font-semibold cursor-pointer">
+                  <PhoneCall className="w-4 h-4 mr-2" />
+                  {isBn ? "সরাসরি কল করুন" : "Call +880 1700-000000"}
+                </Button>
+              </a>
             </div>
           </div>
 
         </div>
       </main>
+
+      {/* Booking Modal */}
+      <ActionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={isBn ? pkg.name_bn : pkg.name_en}
+        subtitle={isBn ? "ট্যুর প্যাকেজ বুকিং কনফার্মেশন ও বুকিং রিকোয়েস্ট" : "Tour package reservation & inquiry"}
+        serviceType="package"
+        initialData={{
+          name: isBn ? pkg.name_bn : pkg.name_en,
+          price: pkg.price_bdt?.toLocaleString(),
+        }}
+        locale={locale}
+      />
     </div>
+  );
+}
+
+export default function PackageDetailPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#faf8f5]" />}>
+      <PackageDetailContent />
+    </Suspense>
   );
 }

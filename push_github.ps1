@@ -5,7 +5,7 @@ Write-Host "Adding files..."
 git add -A
 
 Write-Host "Committing..."
-git commit -m "Fix: Overwrite legacy app favicon and add explicit cache-busting head links"
+git commit -m "Feat: Make all buttons and interactive flows fully functional across all pages"
 
 Write-Host "Pushing to GitHub..."
 git push origin master
