@@ -6,6 +6,8 @@ import { Globe, Menu, X, Compass, MapPin, FileCheck, Shield, Search, Sparkles } 
 import { useState } from "react";
 import { Button } from "./ui/button";
 
+import Image from "next/image";
+
 export function Navigation() {
   const t = useTranslations("Navigation");
   const currentLocale = useLocale();
@@ -26,18 +28,15 @@ export function Navigation() {
         <div className="flex justify-between h-20 items-center">
           
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#0f6b4f] to-[#1aa37a] flex items-center justify-center text-white shadow-md shadow-[#0f6b4f]/25 group-hover:scale-105 transition-transform">
-              <Sparkles className="w-5 h-5 text-emerald-200" />
-            </div>
-            <div>
-              <span className="font-extrabold text-2xl tracking-tight text-[#17201c] block leading-none">
-                Trip<span className="text-[#0f6b4f]">per</span>
-              </span>
-              <span className="text-[10px] uppercase font-bold tracking-widest text-[#0f6b4f]/80 mt-1 block">
-                {isBn ? "বাংলাদেশ টু দ্য ওয়ার্ল্ড" : "Explore • Visa • Docs"}
-              </span>
-            </div>
+          <Link href="/" className="flex items-center gap-2 group py-1">
+            <Image
+              src="/logo.png"
+              alt="Tripper - Travel & Explore"
+              width={160}
+              height={52}
+              className="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform"
+              priority
+            />
           </Link>
 
           {/* Center Nav Pills (Inspired by Unseen Bangladesh) */}

@@ -5,9 +5,9 @@ Write-Host "Adding files..."
 git add -A
 
 Write-Host "Committing..."
-git commit -m "Fix: Resolve Visa Services white screen with resilient fallbacks and error boundary"
+git commit -m "Branding: Add official Tripper logo and brand icon across navigation, footer, and favicon"
 
-Write-Host "Pushing to GitHub..."
+Write-Host "Pushing..."
 git push origin master
 
-Write-Host "Successfully pushed!"
+Write-Host "Successfully pushed official brand updates!"

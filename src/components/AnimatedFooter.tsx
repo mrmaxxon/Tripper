@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Link } from "@/i18n/routing";
+import Image from "next/image";
 
 export function AnimatedFooter({ isBn }: { isBn: boolean }) {
   return (
@@ -56,9 +57,13 @@ export function AnimatedFooter({ isBn }: { isBn: boolean }) {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-start gap-8 pb-10 border-b border-[#0f6b4f]/10">
         <div className="text-center md:text-left">
-          <span className="font-extrabold text-3xl tracking-tight block text-[#17201c]">
-            Trip<span className="text-[#0f6b4f]">per</span>
-          </span>
+          <Image
+            src="/logo.png"
+            alt="Tripper - Travel & Explore"
+            width={160}
+            height={52}
+            className="h-11 w-auto object-contain mx-auto md:mx-0 mb-2"
+          />
           <p className="text-sm text-[#6b7280] mt-2 max-w-sm font-semibold">
             {isBn
               ? "বাংলাদেশের সৌন্দর্য থেকে সারা বিশ্বে। নির্ভরযোগ্য ভিসা, নথিপত্র এবং ট্রিপ প্ল্যানিং।"

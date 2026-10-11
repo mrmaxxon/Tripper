@@ -15,8 +15,13 @@ const anekBangla = Anek_Bangla({
 });
 
 export const metadata: Metadata = {
-  title: "Tripper | From Bangladesh to the World",
+  title: "Tripper - Travel & Explore | From Bangladesh to the World",
   description: "Experience authentic Bangladesh travel discovery, district guides, international visa assistance & document attestation.",
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/logo-icon.png",
+  }
 };
 
 export function generateStaticParams() {
