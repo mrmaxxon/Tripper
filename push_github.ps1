@@ -5,9 +5,9 @@ Write-Host "Adding files..."
 git add -A
 
 Write-Host "Committing..."
-git commit -m "Branding: Add high-resolution emblem as favicon, icon, and apple-touch-icon"
+git commit -m "Fix: Overwrite legacy app favicon and add explicit cache-busting head links"
 
-Write-Host "Pushing..."
+Write-Host "Pushing to GitHub..."
 git push origin master
 
-Write-Host "Successfully pushed favicon update!"
+Write-Host "Successfully pushed!"
