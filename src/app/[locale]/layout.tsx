@@ -18,9 +18,12 @@ export const metadata: Metadata = {
   title: "Tripper - Travel & Explore | From Bangladesh to the World",
   description: "Experience authentic Bangladesh travel discovery, district guides, international visa assistance & document attestation.",
   icons: {
-    icon: "/icon.png",
-    shortcut: "/icon.png",
-    apple: "/logo-icon.png",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png", type: "image/png" }
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
   }
 };
 

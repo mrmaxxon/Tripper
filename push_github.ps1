@@ -5,9 +5,9 @@ Write-Host "Adding files..."
 git add -A
 
 Write-Host "Committing..."
-git commit -m "Branding: Add official Tripper logo and brand icon across navigation, footer, and favicon"
+git commit -m "Branding: Add high-resolution emblem as favicon, icon, and apple-touch-icon"
 
 Write-Host "Pushing..."
 git push origin master
 
-Write-Host "Successfully pushed official brand updates!"
+Write-Host "Successfully pushed favicon update!"
